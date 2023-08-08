@@ -1,0 +1,47 @@
+.admin-outer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-form {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.form-field {
+  width: 100%;
+  display: flex;
+  margin: 10px 0px;
+  align-items: center;
+}
+
+.label {
+  width: 280px;
+  font-size: 18px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 15px 0px;
+  border-bottom: 1px solid gray;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.input-img {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 15px 0px;
+  font-family: "Noto Sans", sans-serif;
+}

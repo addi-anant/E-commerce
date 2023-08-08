@@ -1,0 +1,141 @@
+.header {
+  margin: 0px;
+  padding: 20px 25px 0px 25px;
+  font-weight: 700;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.product-outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px 25px 25px 25px;
+}
+
+.card-container {
+  width: 100%;
+  display: grid;
+  grid-gap: 20px;
+  padding: 25px 0px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.card {
+  width: 100%;
+  height: max-content;
+  padding: 20px 0px 10px 0px;
+  border: 1px solid var(--icon);
+}
+
+.card-top {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-top > img {
+  height: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.card-detail {
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.card-detail > .name {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.card-detail > .cost {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  font-weight: 400;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.button-container {
+  gap: 10px;
+  padding: 10px;
+  display: flex;
+}
+
+.button-container > button {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: var(--primary);
+  font-family: "Noto Sans", sans-serif;
+}
+
+.button-container > button:hover {
+  background-color: var(--secondary);
+}
+
+button.detail-btn {
+  background-color: var(--additional-primary);
+}
+
+button.detail-btn:hover {
+  background-color: var(--additional-secondary);
+}
+
+.cost > i {
+  font-size: 14px;
+  padding: 0px 4px;
+  color: var(--icon);
+}
+
+.quantity-container {
+  gap: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.quantity {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.heading {
+  font-weight: 600;
+}
+
+.quantity-btn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  display: flex;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+  background-color: var(--icon);
+}
+
+.quantity-btn:hover {
+  background-color: var(--additional-secondary);
+}
+
+.quantity-btn > i {
+  font-size: 16px;
+}

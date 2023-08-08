@@ -1,0 +1,36 @@
+<div class="navbar">
+  <p class="navbar-logo">
+    <a href="/" class="link-neutral">E-commerce</a>
+  </p>
+  <div class="navbar-util">
+    <form class="search-bar">
+      <input type="text" placeholder="Search products" />
+      <button><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+
+    <% if(!user) { %>
+    <div class="control-btn" class="link">
+      <button>
+        <a href="/auth/login" class="link-btn"> Login </a>
+      </button>
+
+      <button>
+        <a href="/auth/register" class="link-btn"> Register </a>
+      </button>
+    </div>
+    <% } %>
+
+    <!--  -->
+
+    <% if(user) { %>
+    <div class="control-btn">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <div class="user">
+        <i class="fa-solid fa-user"> </i>
+        <p><%= user %></p>
+      </div>
+      <button>Logout</button>
+    </div>
+    <% } %>
+  </div>
+</div>

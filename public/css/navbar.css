@@ -1,0 +1,91 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+.navbar {
+  height: 80px;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.navbar-logo {
+  margin: 0px;
+  font-size: 24px;
+  color: green;
+  font-weight: 600;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.navbar-util {
+  gap: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar {
+  gap: 10px;
+  display: flex;
+  margin-right: 25px;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar > input {
+  border: none;
+  outline: none;
+  padding: 12px 15px;
+  background-color: rgb(243, 243, 243);
+  font-family: "Noto Sans", sans-serif;
+  width: 300px;
+}
+
+.search-bar > button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.control-btn {
+  gap: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.control-btn > button {
+  border: none;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: var(--primary);
+  font-family: "Noto Sans", sans-serif;
+}
+
+.navbar-util > p {
+  margin: 0px;
+  font-size: 16px;
+}
+
+i {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.user > p {
+  font-size: 18px;
+  cursor: pointer;
+  padding-left: 10px;
+  font-family: "Noto Sans", sans-serif;
+}

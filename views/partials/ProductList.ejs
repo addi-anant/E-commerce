@@ -1,0 +1,29 @@
+<div class="product-outer">
+  <div class="card-container">
+    <% for(var i = 0; i < 10; i++) { %>
+    <div class="card">
+      <!-- Product Img: -->
+      <div class="card-top">
+        <img
+          src="https://m.media-amazon.com/images/I/41oLKl-rukL._UX679_.jpg" />
+      </div>
+      <div class="card-lower">
+        <!-- Edit Form: -->
+        <div class="card-detail">
+          <p class="name">Nike T-shirt Men's</p>
+          <p class="cost">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            699.00
+          </p>
+        </div>
+
+        <!-- Edit / Delete Button: -->
+        <div class="button-container">
+          <button type="button">Add to cart</button>
+          <button type="button" class="detail-btn">View Detial</button>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>

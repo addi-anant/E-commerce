@@ -1,0 +1,75 @@
+<div class="card-container">
+  <% for(var i = 0; i < 10; i++) { %>
+  <div class="card">
+    <!-- Product Img: -->
+    <div class="card-top">
+      <img src="https://m.media-amazon.com/images/I/41oLKl-rukL._UX679_.jpg" />
+    </div>
+    <div class="card-lower">
+      <!-- Edit Form: -->
+      <div class="card-detail">
+        <form
+          enctype="multipart/form-data"
+          action="/admin/edit-product"
+          method="post">
+          <div class="form-field">
+            <label for="name" class="label"> Product Name: </label>
+            <input
+              required
+              autocomplete="off"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Product Name"
+              class="input" />
+          </div>
+
+          <div class="form-field">
+            <label for="description" class="label">
+              Product Description:
+            </label>
+            <input
+              required
+              autocomplete="off"
+              type="text"
+              name="description"
+              id="description"
+              placeholder="Product Description"
+              class="input" />
+          </div>
+
+          <div class="form-field">
+            <label for="price" class="label"> Product Price: </label>
+            <input
+              required
+              autocomplete="off"
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Product Price"
+              class="input" />
+          </div>
+
+          <div class="form-field">
+            <label for="quantity" class="label"> Product Quantity: </label>
+            <input
+              required
+              autocomplete="off"
+              type="number"
+              id="quantity"
+              name="quantity"
+              placeholder="Product Quantity"
+              class="input" />
+          </div>
+        </form>
+      </div>
+
+      <!-- Edit / Delete Button: -->
+      <div class="button-container">
+        <button type="button">Edit</button>
+        <button type="button" class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>

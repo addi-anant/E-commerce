@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/adminProductForm.css" />
+  </head>
+  <body>
+    <div class="admin-outer">
+      <form
+        class="admin-form"
+        enctype="multipart/form-data"
+        action="/admin/add"
+        method="post">
+        <div class="form-field">
+          <label for="name" class="label"> Product Name: </label>
+          <input
+            required
+            autocomplete="off"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Product Name"
+            class="input" />
+        </div>
+
+        <div class="form-field">
+          <label for="description" class="label"> Product Description: </label>
+          <input
+            required
+            autocomplete="off"
+            type="text"
+            name="description"
+            id="description"
+            placeholder="Product Description"
+            class="input" />
+        </div>
+
+        <div class="form-field">
+          <label for="price" class="label"> Product Price: </label>
+          <input
+            required
+            autocomplete="off"
+            type="number"
+            id="price"
+            name="price"
+            placeholder="Product Price"
+            class="input" />
+        </div>
+
+        <div class="form-field">
+          <label for="quantity" class="label"> Product Quantity: </label>
+          <input
+            required
+            autocomplete="off"
+            type="number"
+            id="quantity"
+            name="quantity"
+            placeholder="Product Quantity"
+            class="input" />
+        </div>
+
+        <div class="form-field">
+          <label for="img" class="label"> Product Image: </label>
+          <input required type="file" id="img" class="input-img" name="file" />
+        </div>
+
+        <button type="submit" class="form-btn">Add Product</button>
+      </form>
+    </div>
+  </body>
+</html>

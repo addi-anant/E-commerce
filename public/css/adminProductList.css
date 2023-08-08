@@ -1,0 +1,73 @@
+.card-container {
+  width: 100%;
+  display: grid;
+  grid-gap: 20px;
+  padding: 25px 0px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.card {
+  width: 100%;
+  height: max-content;
+  padding: 20px 0px 10px 0px;
+  border: 1px solid var(--icon);
+}
+
+.card-top {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-top > img {
+  height: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.card-detail {
+  padding: 10px;
+}
+
+.form-field {
+  display: flex;
+  margin: 6px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  width: 250px;
+  font-size: 14px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.input {
+  width: 100%;
+  font-size: 14px;
+  padding: 7px 4px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.button-container {
+  gap: 10px;
+  padding: 10px;
+  display: flex;
+}
+
+.button-container > button {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: var(--primary);
+  font-family: "Noto Sans", sans-serif;
+}
+
+button.delete-btn {
+  background-color: var(--delete);
+}

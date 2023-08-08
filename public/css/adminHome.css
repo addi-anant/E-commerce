@@ -1,0 +1,13 @@
+.home-outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 25px 25px;
+}
+
+h1 {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Noto Sans", sans-serif;
+}
