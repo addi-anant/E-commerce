@@ -1,3 +1,5 @@
+const Product = require("../models/Product");
+
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
@@ -8,13 +10,19 @@ router.get("/add-product-form", (req, res) => {
   return res.render("addProductForm");
 });
 
-router.post("/add-product", (req, res) => {
-  const product = {
+router.post("/add-product", async (req, res) => {
+  const product = new Product({
     ...req.body,
-    file: req.file.filename,
-  }; /* 'Product' to be stored in DB. */
+    img: req.file.filename,
+  });
 
-  return res.status(200).json("added successfully");
+  try {
+    await product.save();
+    return res.redirect("/add-product-form");
+  } catch (Error) {
+    console.log(`Error while creating product: ${Error}`);
+    return res.status(500).json(Error);
+  }
 });
 
 router.put("/edit-product", (req, res) => {});

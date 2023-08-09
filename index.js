@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const multer = require("multer");
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
 
 const app = express();
 
@@ -9,6 +10,14 @@ app.use(express.json()); // JSON Data.
 app.set("view engine", "ejs"); // View Engine.
 app.use(express.urlencoded({ extended: true })); //Form Data.
 app.use(express.static(__dirname + "/public")); // Static File (CSS | JS).
+app.use(
+  // Session Handling.
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 
 dotenv.config(); // dotenv Configuration.
 

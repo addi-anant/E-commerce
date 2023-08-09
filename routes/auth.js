@@ -1,51 +1,24 @@
 const router = require("express").Router();
+const auth = require("../controllers/auth");
 
-router.get("/login", (req, res) => {
-  return res.render("login", { user: null, required: false, invalid: false });
-});
+router.get("/login", auth.login_GET);
 
-router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+router.post("/login", auth.login_POST);
 
-  if (email === "" || password === "") {
-    return res.render("login", { user: null, required: true, invalid: false });
-  }
+router.get("/register", auth.register_GET);
 
-  // if user doesn't exist:
-  // return res.render("login", { user: null, required: false, invalid: true });
+router.post("/register", auth.register_POST);
 
-  // if user exist:
-  return res.redirect("/");
-});
+router.get("/verify/:token", auth.verifyEmail_GET);
 
-router.get("/register", (req, res) => {
-  return res.render("register", {
-    user: null,
-    exist: false,
-    required: false,
-  });
-});
+router.get("/logout", auth.logout_GET);
 
-router.post("/register", (req, res) => {
-  const { name, email, password } = req.body;
+router.get("/forgot-password", auth.forgotPassword_GET);
 
-  if (name === "" || email === "" || password === "") {
-    return res.render("register", {
-      user: null,
-      exist: false,
-      required: true,
-    });
-  }
+router.post("/forgot-password", auth.forgotPassword_POST);
 
-  // check if user already registered:
-  // return res.render("register", { user: null, exist: true, required: false });
+router.get("/new-password/:token", auth.newPassword_GET);
 
-  // save the user in the database:
-  return res.redirect("/auth/login");
-});
-
-router.get("/logout", (req, res) => {
-  console.log("GET /logout");
-});
+router.post("/new-password/:token", auth.newPassword_POST);
 
 module.exports = router;

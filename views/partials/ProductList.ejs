@@ -1,25 +1,24 @@
 <div class="product-outer">
   <div class="card-container">
-    <% for(var i = 0; i < 10; i++) { %>
-    <div class="card">
+    <% for(var i = 0; i < productList.length; i++) { %>
+    <div class="card" product_id="<%= productList[i]._id %>">
       <!-- Product Img: -->
       <div class="card-top">
-        <img
-          src="https://m.media-amazon.com/images/I/41oLKl-rukL._UX679_.jpg" />
+        <img src="<%= productList[i].img %>" />
       </div>
       <div class="card-lower">
-        <!-- Edit Form: -->
+        <!-- Product Detail: -->
         <div class="card-detail">
-          <p class="name">Nike T-shirt Men's</p>
+          <p class="name"><%= productList[i].name %></p>
           <p class="cost">
             <i class="fa-solid fa-indian-rupee-sign"></i>
-            699.00
+            <%= productList[i].price %>
           </p>
         </div>
 
-        <!-- Edit / Delete Button: -->
+        <!-- Cart / Detail Button: -->
         <div class="button-container">
-          <button type="button">Add to cart</button>
+          <button type="button" class="cart-btn">Add to cart</button>
           <button type="button" class="detail-btn">View Detial</button>
         </div>
       </div>

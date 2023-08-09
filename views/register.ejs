@@ -41,13 +41,8 @@
           </div>
 
           <!-- Email/Password Required -->
-          <% if (required) { %>
-          <p>both Email and Password are required!</p>
-          <% } %>
-
-          <!-- user already Exist! -->
-          <% if (exist) { %>
-          <p>Email Already Exists!</p>
+          <% if (error) { %>
+          <p>error</p>
           <% } %>
 
           <button class="form-btn">Register</button>
