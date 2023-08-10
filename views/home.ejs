@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/index.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
     <link rel="stylesheet" href="/css/productList.css" />
+    <link rel="stylesheet" href="/css/productModal.css" />
     <script
       src="https://kit.fontawesome.com/e0013384a5.js"
       crossorigin="anonymous"></script>
@@ -21,10 +22,11 @@
     <%- include('partials/navbar.ejs', {user: user}) %>
 
     <!-- Product List: -->
-    <%- include('partials/productList.ejs', {productList: productList} ) %>
+    <%- include('partials/productList.ejs') %>
 
     <!-- Product Modal -->
 
+    <script type="text/javascript" src="/js/auth.js"></script>
     <script type="text/javascript" src="/js/productList.js"></script>
   </body>
 </html>

@@ -18,7 +18,7 @@ router.post("/add-product", async (req, res) => {
 
   try {
     await product.save();
-    return res.redirect("/add-product-form");
+    return res.redirect("/admin/add-product-form");
   } catch (Error) {
     console.log(`Error while creating product: ${Error}`);
     return res.status(500).json(Error);

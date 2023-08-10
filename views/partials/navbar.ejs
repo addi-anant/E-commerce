@@ -8,6 +8,7 @@
       <button><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
+    <!-- Not Logged In: -->
     <% if(!user) { %>
     <div class="control-btn" class="link">
       <button>
@@ -20,8 +21,7 @@
     </div>
     <% } %>
 
-    <!--  -->
-
+    <!-- Logged In: -->
     <% if(user) { %>
     <div class="control-btn">
       <i class="fa-solid fa-cart-shopping"></i>
@@ -29,7 +29,7 @@
         <i class="fa-solid fa-user"> </i>
         <p><%= user %></p>
       </div>
-      <button>Logout</button>
+      <button id="logout">Logout</button>
     </div>
     <% } %>
   </div>

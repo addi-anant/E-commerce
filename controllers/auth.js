@@ -2,11 +2,12 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Token = require("../models/Token");
 const tokenGeneration = require("../utils/TokenGeneration");
-const { verifyEmail, resetPassword } = require("../utils/NodeMailer");
+const { verifyEmail, updatePassword } = require("../utils/NodeMailer");
+const validatePassword = require("../utils/validatePassword");
 
 // Login: GET
 module.exports.login_GET = (req, res) => {
-  return res.render("login", { user: null, error: null });
+  return res.render("login", { user: null, message: null });
 };
 
 // Login: POST
@@ -17,7 +18,7 @@ module.exports.login_POST = async (req, res) => {
   if (email === "" || password === "") {
     return res.render("login", {
       user: null,
-      error: "Both username and password are required!",
+      message: "Both username and password are required!",
     });
   }
 
@@ -28,7 +29,7 @@ module.exports.login_POST = async (req, res) => {
     if (!user) {
       return res.render("login", {
         user: null,
-        error: "Invalid username or password!",
+        message: "Invalid username or password!",
       });
     }
 
@@ -48,7 +49,7 @@ module.exports.login_POST = async (req, res) => {
 module.exports.register_GET = (req, res) => {
   return res.render("register", {
     user: null,
-    error: null,
+    message: null,
   });
 };
 
@@ -56,11 +57,12 @@ module.exports.register_GET = (req, res) => {
 module.exports.register_POST = async (req, res) => {
   const { name, email, password } = req.body;
 
-  // All Fields are required.
-  if (name === "" || email === "" || password === "") {
+  // validate password:
+  if (!validatePassword(password)) {
+    console.log("here");
     return res.render("register", {
       user: null,
-      error: "All Fields are required!",
+      message: "Follow the Password Constraints.",
     });
   }
 
@@ -74,7 +76,7 @@ module.exports.register_POST = async (req, res) => {
     if (Exist) {
       return res.render("register", {
         user: null,
-        error: "Email already in use",
+        message: "Another user Registered with the provided Email!",
       });
     }
 
@@ -107,35 +109,53 @@ module.exports.verifyEmail_GET = (req, res) => {
 
   // Verifying the JWT token
   jwt.verify(token, process.env.JWT_SECRET, async (Error, decoded) => {
-    const email = decoded.email;
-
-    await User.findOneAndUpdate({ email }, { $set: { verified: true } });
-    await Token.findOneAndDelete({ email });
-
     if (Error) {
       console.log(`Error while verifying JWT token: ${Error}`);
       res.status(500).json(Error);
     }
 
-    res.redirect("/login");
+    const email = decoded.email;
+    await User.findOneAndUpdate({ email }, { $set: { verified: true } });
+    await Token.findOneAndDelete({ email });
+
+    // Verfied Email:
+    const user = await User.findOne({ email });
+    req.session.user = user.name;
+    req.session.isLoggedIn = true;
+    req.session.admin = user.admin;
+    res.redirect("/");
   });
 };
 
 // Forgot Password: GET
 module.exports.forgotPassword_GET = (req, res) => {
-  return res.render("forgotPassword", { user: req.session.user, error: null });
+  return res.render("updatePassword", {
+    user: req.session.user,
+    heading: "Forgot Password",
+    message: null,
+  });
 };
 
-// Forgot Password: POST
-module.exports.forgotPassword_POST = async (req, res) => {
+// Reset Password: GET
+module.exports.resetPassword_GET = (req, res) => {
+  return res.render("updatePassword", {
+    user: req.session.user,
+    heading: "Reset Password",
+    message: null,
+  });
+};
+
+// Forgot & Reset Password - POST:
+module.exports.updatePassword_POST = async (req, res) => {
   const { email } = req.body;
 
   // CHECK IF ANY USER WITH PROVIDED EMAIL EXISTS:
   const Exist = await User.findOne({ email: email });
   if (!Exist) {
-    return res.render("forgotPassword", {
+    return res.render("updatePassword", {
+      heading: "Update Password",
       user: req.session.user,
-      error: "No user with provided Email Exist!",
+      message: "No user with provided Email Exist!",
     });
   }
 
@@ -143,23 +163,38 @@ module.exports.forgotPassword_POST = async (req, res) => {
   const token = await tokenGeneration(email);
 
   // SEND MAIL FOR VERIFICATION:
-  await resetPassword(email, token);
+  await updatePassword(email, token);
 
   return res.render("message", {
-    message: "Link for updating password sent, Check Your Email!",
+    message: "Link to update / reset password sent, Check Your Email!",
     user: req.session.user,
   });
 };
 
-// NEW Password: GET
+// NEW Password (Forgot/Reset) - GET:
 module.exports.newPassword_GET = (req, res) => {
-  return res.render("newPassword", { user: req.session.user, token: "abc" });
+  return res.render("newPassword", { user: req.session.user, message: null });
 };
 
-// NEW Password: POST
+// NEW Password (Forgot/Reset) - POST:
 module.exports.newPassword_POST = (req, res) => {
   const { token } = req.params;
-  const { password } = req.body;
+  const { password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    return res.render(`newPassword`, {
+      user: req.session.user,
+      message: "Passwords do'not match!",
+    });
+  }
+
+  // validate password:
+  if (!validatePassword(password)) {
+    return res.render(`newPassword`, {
+      user: req.session.user,
+      message: "follow the password constraints.",
+    });
+  }
 
   // VERIFY TOKEN AND UPDATE PASSWORD:
   jwt.verify(token, process.env.JWT_SECRET, async (Error, decoded) => {
@@ -177,7 +212,7 @@ module.exports.newPassword_POST = (req, res) => {
   });
 };
 
-// LOGOUT:
+// LOGOUT - GET:
 module.exports.logout_GET = (req, res) => {
   req.session.destroy();
   return res.redirect("/login");

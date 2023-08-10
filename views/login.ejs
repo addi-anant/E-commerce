@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <link rel="stylesheet" href="/css/form.css" />
     <link rel="stylesheet" href="/css/index.css" />
-    <link rel="stylesheet" href="/css/login.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
     <script
       src="https://kit.fontawesome.com/e0013384a5.js"
@@ -29,19 +29,29 @@
         <form class="login-credential" method="post" action="/auth/login">
           <div>
             <i class="fa-solid fa-envelope"></i>
-            <input name="email" type="email" placeholder="Email" />
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              autocomplete="off" />
           </div>
           <div>
             <i class="fa-solid fa-lock"></i>
-            <input name="password" type="password" placeholder="Password" />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+              autocomplete="off" />
           </div>
 
-          <!-- Email/Password Required -->
-          <% if (error) { %>
-          <p>error</p>
-          <% } %>
-
           <button class="form-btn" type="submit">Login</button>
+
+          <!-- Error Message: -->
+          <% if (message) { %>
+          <p class="message"><%= message %></p>
+          <% } %>
         </form>
 
         <hr />

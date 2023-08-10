@@ -4,9 +4,11 @@
   justify-content: center;
   flex-direction: column;
   padding: 25px 25px;
+  position: relative;
 }
 
 .card-container {
+  position: relative;
   width: 100%;
   display: grid;
   grid-gap: 20px;
@@ -93,4 +95,14 @@ button.detail-btn:hover {
   font-size: 14px;
   padding: 0px 4px;
   color: var(--icon);
+}
+
+.modal-wrapper {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+  height: calc(100vh - 80px);
 }

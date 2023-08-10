@@ -1,28 +1,5 @@
 <div class="product-outer">
-  <div class="card-container">
-    <% for(var i = 0; i < productList.length; i++) { %>
-    <div class="card" product_id="<%= productList[i]._id %>">
-      <!-- Product Img: -->
-      <div class="card-top">
-        <img src="<%= productList[i].img %>" />
-      </div>
-      <div class="card-lower">
-        <!-- Product Detail: -->
-        <div class="card-detail">
-          <p class="name"><%= productList[i].name %></p>
-          <p class="cost">
-            <i class="fa-solid fa-indian-rupee-sign"></i>
-            <%= productList[i].price %>
-          </p>
-        </div>
-
-        <!-- Cart / Detail Button: -->
-        <div class="button-container">
-          <button type="button" class="cart-btn">Add to cart</button>
-          <button type="button" class="detail-btn">View Detial</button>
-        </div>
-      </div>
-    </div>
-    <% } %>
-  </div>
+  <div class="card-container"></div>
+  <div id="modal" class=""></div>
+  <button class="form-btn" id="load-more-btn">Load More</button>
 </div>

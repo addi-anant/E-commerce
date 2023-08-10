@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
+    <link rel="stylesheet" href="/css/form.css" />
     <link rel="stylesheet" href="/css/index.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
-    <link rel="stylesheet" href="/css/register.css" />
     <script
       src="https://kit.fontawesome.com/e0013384a5.js"
       crossorigin="anonymous"></script>
@@ -29,27 +29,51 @@
         <form class="login-credential" method="post" action="/auth/register">
           <div>
             <i class="fa-solid fa-user"></i>
-            <input name="name" type="text" placeholder="Name" />
+            <input
+              name="name"
+              type="text"
+              required
+              autocomplete="off"
+              placeholder="Name" />
           </div>
           <div>
             <i class="fa-solid fa-envelope"></i>
-            <input name="email" type="email" placeholder="Email" />
+            <input
+              name="email"
+              type="email"
+              required
+              autocomplete="off"
+              placeholder="Email" />
           </div>
           <div>
             <i class="fa-solid fa-lock"></i>
-            <input name="password" type="password" placeholder="Password" />
+            <input
+              name="password"
+              type="password"
+              required
+              autocomplete="off"
+              placeholder="Password" />
           </div>
 
-          <!-- Email/Password Required -->
-          <% if (error) { %>
-          <p>error</p>
-          <% } %>
+          <div class="constraint">
+            <ul class="constraint">
+              <li>Min. 8 Character long.</li>
+              <li>Should have atleast one number.</li>
+              <li>Should have atleast lowercase alphabet.</li>
+              <li>Should have atleast uppercase alphabet.</li>
+            </ul>
 
-          <button class="form-btn">Register</button>
+            <button class="form-btn" type="submit">Register</button>
+          </div>
+
+          <!-- Error Message -->
+          <% if (message) { %>
+          <p class="message"><%= message %></p>
+          <% } %>
         </form>
 
         <hr />
-        <div class="exist">
+        <div class="wrapper">
           <p>Have an Account? <a href="/auth/login" class="link">Sign-In</a></p>
         </div>
       </div>
