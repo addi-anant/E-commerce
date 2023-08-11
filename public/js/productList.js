@@ -1,23 +1,3 @@
-/* EventListener for 'cart' button: */
-// document.querySelectorAll(".cart-btn").forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     const productId =
-//       btn.parentNode.parentNode.parentNode.getAttribute("product_id");
-
-//     console.log(productId);
-//   });
-// });
-
-/* EventListener for 'detail' button: */
-// document.querySelectorAll(".detail-btn").forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     const productId =
-//       btn.parentNode.parentNode.parentNode.getAttribute("product_id");
-
-//     console.log(productId);
-//   });
-// });
-
 // fetch all the todo from the server and display them to the user:
 const fetchProduct = async (number) => {
   const response = await fetch(`/fetch-product/${number}`, {
@@ -51,7 +31,7 @@ const addToDOM = function (id, name, imgURL, price) {
 
       <div class="button-container">
         <button type="button" class="cart-btn" onclick = addToCart("${id}")  >Add to cart</button>
-        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>View Detial</button>
+        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>Detial</button>
       </div>
     </div>
   </div>`;
@@ -59,12 +39,8 @@ const addToDOM = function (id, name, imgURL, price) {
   cardContainer.insertAdjacentHTML("beforeend", product);
 };
 
-const addToCart = (id) => {
-  console.log(id);
-};
-
 const modalWrapper = document.getElementById("modal");
-// const body = document.querySelector("body");
+const body = document.querySelector("body");
 const viewDetail = async (id) => {
   const response = await fetch(`/product/${id}`, {
     method: "GET",
@@ -89,11 +65,13 @@ const viewDetail = async (id) => {
   </div>`;
 
   // append a modal.
+  cardContainer.classList.add("opc");
   modalWrapper.classList.add("modal-wrapper");
   modalWrapper.insertAdjacentHTML("beforeend", modal);
 };
 
 const removeModal = (val) => {
+  cardContainer.classList.remove("opc");
   modalWrapper.removeChild(val.parentNode);
   modalWrapper.classList.remove("modal-wrapper");
 };
@@ -107,3 +85,20 @@ const loadProduct = () => {
 };
 
 loadProduct();
+
+const addToCart = async (id) => {
+  console.log(id);
+  const response = await fetch(`/user/add-product-cart/${id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.status === 401) {
+    window.location.replace("/auth/login");
+  }
+
+  const product = await response.json();
+  console.log(product);
+
+  console.log(response.status);
+};

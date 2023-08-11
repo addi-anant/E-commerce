@@ -26,29 +26,6 @@ body {
   align-items: center;
 }
 
-.search-bar {
-  gap: 10px;
-  display: flex;
-  margin-right: 25px;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-bar > input {
-  border: none;
-  outline: none;
-  padding: 12px 15px;
-  background-color: rgb(243, 243, 243);
-  font-family: "Noto Sans", sans-serif;
-  width: 300px;
-}
-
-.search-bar > button {
-  border: none;
-  outline: none;
-  background: transparent;
-}
-
 .control-btn {
   gap: 15px;
   display: flex;
@@ -66,6 +43,11 @@ body {
   border-radius: 10px;
   background-color: var(--primary);
   font-family: "Noto Sans", sans-serif;
+  border-radius: 100px;
+}
+
+.control-btn > button:hover {
+  background-color: var(--secondary);
 }
 
 .navbar-util > p {
@@ -86,6 +68,6 @@ i {
 .user > p {
   font-size: 18px;
   cursor: pointer;
-  padding-left: 10px;
+  padding: 0px 10px;
   font-family: "Noto Sans", sans-serif;
 }

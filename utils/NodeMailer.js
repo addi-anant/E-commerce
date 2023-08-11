@@ -15,11 +15,9 @@ module.exports.verifyEmail = async (email, token) => {
     from: "addi.anant01@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `Hi! There, You have recently visited 
-           our website and entered your email.
-           Please follow the given link to verify your email
-           http://localhost:8080/auth/verify/${token}, the url will expire in 10 minutes. 
-           Thanks`,
+    text: `Hi! There, You have recently visited our website and entered your email. Please follow the given link to verify your email http://localhost:8080/auth/verify/${token}, the url will expire in 10 minutes. 
+           
+    Thanks`,
   };
 
   transporter.sendMail(mailConfigurations, (Error, info) => {

@@ -3,11 +3,6 @@
     <a href="/" class="link-neutral">E-commerce</a>
   </p>
   <div class="navbar-util">
-    <form class="search-bar">
-      <input type="text" placeholder="Search products" />
-      <button><i class="fa-solid fa-magnifying-glass"></i></button>
-    </form>
-
     <!-- Not Logged In: -->
     <% if(!user) { %>
     <div class="control-btn" class="link">
@@ -24,12 +19,16 @@
     <!-- Logged In: -->
     <% if(user) { %>
     <div class="control-btn">
-      <i class="fa-solid fa-cart-shopping"></i>
       <div class="user">
-        <i class="fa-solid fa-user"> </i>
         <p><%= user %></p>
+        <i class="fa-solid fa-user"> </i>
       </div>
-      <button id="logout">Logout</button>
+      <a href="/user/cart" class="link-neutral">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+      <i class="fa-solid fa-right-from-bracket" id="logout"></i>
+
+      <button id="password">Change Password</button>
     </div>
     <% } %>
   </div>

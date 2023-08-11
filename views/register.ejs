@@ -26,11 +26,11 @@
           <h2>Sign-up</h2>
           <p>Buy Smarter, Now!</p>
         </div>
-        <form class="login-credential" method="post" action="/auth/register">
+        <form class="login-credential">
           <div>
             <i class="fa-solid fa-user"></i>
             <input
-              name="name"
+              id="register-name"
               type="text"
               required
               autocomplete="off"
@@ -39,7 +39,7 @@
           <div>
             <i class="fa-solid fa-envelope"></i>
             <input
-              name="email"
+              id="register-email"
               type="email"
               required
               autocomplete="off"
@@ -48,7 +48,7 @@
           <div>
             <i class="fa-solid fa-lock"></i>
             <input
-              name="password"
+              id="register-password"
               type="password"
               required
               autocomplete="off"
@@ -63,13 +63,13 @@
               <li>Should have atleast uppercase alphabet.</li>
             </ul>
 
-            <button class="form-btn" type="submit">Register</button>
+            <button class="form-btn" type="button" id="register-btn">
+              Register
+            </button>
           </div>
 
-          <!-- Error Message -->
-          <% if (message) { %>
-          <p class="message"><%= message %></p>
-          <% } %>
+          <p class="message" id="client-info"></p>
+          <p class="message" id="client-error"></p>
         </form>
 
         <hr />
@@ -80,5 +80,6 @@
     </div>
 
     <%- include('partials/footer.ejs') %>
+    <script type="text/javascript" src="/js/form.js"></script>
   </body>
 </html>

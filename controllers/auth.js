@@ -1,13 +1,14 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Cart = require("../models/Cart");
 const Token = require("../models/Token");
 const tokenGeneration = require("../utils/TokenGeneration");
-const { verifyEmail, updatePassword } = require("../utils/NodeMailer");
 const validatePassword = require("../utils/validatePassword");
+const { verifyEmail, updatePassword } = require("../utils/NodeMailer");
 
 // Login: GET
 module.exports.login_GET = (req, res) => {
-  return res.render("login", { user: null, message: null });
+  return res.render("login", { user: null });
 };
 
 // Login: POST
@@ -15,30 +16,25 @@ module.exports.login_POST = async (req, res) => {
   const { email, password } = req.body;
 
   // Both email and password are required:
-  if (email === "" || password === "") {
-    return res.render("login", {
-      user: null,
-      message: "Both username and password are required!",
-    });
-  }
+  if (email === "" || password === "") return res.status(400).send();
 
   try {
     const user = await User.findOne({ email: email, password: password });
 
     // No user with provided credentials:
-    if (!user) {
-      return res.render("login", {
-        user: null,
-        message: "Invalid username or password!",
-      });
-    }
+    if (!user) return res.status(404).send();
+
+    // check for Email verification:
+    if (!user.verified) return res.status(401).send();
 
     // Valid Credentials:
     req.session.user = user.name;
     req.session.isLoggedIn = true;
     req.session.admin = user.admin;
+    req.session.cartID = user.cart;
+    req.session.email = user.email;
 
-    res.redirect("/");
+    return res.status(200).send();
   } catch (Error) {
     console.log(`Error while Login: ${Error}`);
     return res.status(500).json(Error);
@@ -49,7 +45,6 @@ module.exports.login_POST = async (req, res) => {
 module.exports.register_GET = (req, res) => {
   return res.render("register", {
     user: null,
-    message: null,
   });
 };
 
@@ -57,33 +52,28 @@ module.exports.register_GET = (req, res) => {
 module.exports.register_POST = async (req, res) => {
   const { name, email, password } = req.body;
 
+  // All field are required:
+  if (name === "" || email === "" || password === "")
+    return res.status(400).send();
+
   // validate password:
-  if (!validatePassword(password)) {
-    console.log("here");
-    return res.render("register", {
-      user: null,
-      message: "Follow the Password Constraints.",
-    });
-  }
+  if (!validatePassword(password)) return res.status(406).send();
 
   try {
     // check for existing user with provided Email:
-    const Exist = await User.findOne({
-      email: email,
-    });
+    const Exist = await User.findOne({ email: email });
 
     // Email already in use:
-    if (Exist) {
-      return res.render("register", {
-        user: null,
-        message: "Another user Registered with the provided Email!",
-      });
-    }
+    if (Exist) return res.status(401).send();
+
+    // create cart for user:
+    const cart = await Cart.create({});
 
     // Create New USER:
     await User.create({
       name: name,
       email: email,
+      cart: cart._id,
       password: password,
     });
 
@@ -93,10 +83,7 @@ module.exports.register_POST = async (req, res) => {
     // SEND LINK FOR EMAIL VERIFICATION:
     await verifyEmail(email, token);
 
-    return res.render("message", {
-      user: req.session.user,
-      message: "Link send for verification, Check Your Email!",
-    });
+    return res.status(200).send();
   } catch (Error) {
     console.log(`Error while Registeration: ${Error}`);
     return res.status(500).json(Error);
@@ -132,32 +119,17 @@ module.exports.forgotPassword_GET = (req, res) => {
   return res.render("updatePassword", {
     user: req.session.user,
     heading: "Forgot Password",
-    message: null,
   });
 };
 
-// Reset Password: GET
-module.exports.resetPassword_GET = (req, res) => {
-  return res.render("updatePassword", {
-    user: req.session.user,
-    heading: "Reset Password",
-    message: null,
-  });
-};
-
-// Forgot & Reset Password - POST:
+// Forgot Password - POST:
 module.exports.updatePassword_POST = async (req, res) => {
   const { email } = req.body;
+  if (email === "") return res.status(400).send();
 
   // CHECK IF ANY USER WITH PROVIDED EMAIL EXISTS:
   const Exist = await User.findOne({ email: email });
-  if (!Exist) {
-    return res.render("updatePassword", {
-      heading: "Update Password",
-      user: req.session.user,
-      message: "No user with provided Email Exist!",
-    });
-  }
+  if (!Exist) return res.status(404).send();
 
   // GENERATE TOKEN FOR VERIFICATION:
   const token = await tokenGeneration(email);
@@ -165,35 +137,47 @@ module.exports.updatePassword_POST = async (req, res) => {
   // SEND MAIL FOR VERIFICATION:
   await updatePassword(email, token);
 
-  return res.render("message", {
-    message: "Link to update / reset password sent, Check Your Email!",
+  return res.status(200).send();
+};
+
+// Reset Password: GET
+module.exports.resetPassword_GET = (req, res) => {
+  if (!req.session.isLoggedIn) return res.redirect("/");
+
+  return res.render("newPassword", {
     user: req.session.user,
+    heading: "Reset Password",
   });
 };
 
 // NEW Password (Forgot/Reset) - GET:
 module.exports.newPassword_GET = (req, res) => {
-  return res.render("newPassword", { user: req.session.user, message: null });
+  return res.render("newPassword", {
+    user: req.session.user,
+    heading: "Enter New Password",
+  });
 };
 
 // NEW Password (Forgot/Reset) - POST:
-module.exports.newPassword_POST = (req, res) => {
+module.exports.newPassword_POST = async (req, res) => {
   const { token } = req.params;
   const { password, confirmPassword } = req.body;
 
-  if (password !== confirmPassword) {
-    return res.render(`newPassword`, {
-      user: req.session.user,
-      message: "Passwords do'not match!",
-    });
-  }
+  if (password === "" || confirmPassword === "") return res.status(400).send();
+
+  if (password !== confirmPassword) return res.status(409).send();
 
   // validate password:
-  if (!validatePassword(password)) {
-    return res.render(`newPassword`, {
-      user: req.session.user,
-      message: "follow the password constraints.",
-    });
+  if (!validatePassword(password)) return res.status(406).send();
+
+  /* token === undefined -> RESET PASSWORD */
+  if (token === "undefined") {
+    await User.findOneAndUpdate(
+      { email: req.session.email },
+      { $set: { password: password } }
+    );
+
+    return res.status(200).send();
   }
 
   // VERIFY TOKEN AND UPDATE PASSWORD:
@@ -205,10 +189,10 @@ module.exports.newPassword_POST = (req, res) => {
 
     if (Error) {
       console.log(`Error while verifying JWT token: ${Error}`);
-      res.status(500).json(Error);
+      return res.status(500).json(Error);
     }
 
-    res.redirect("/auth/login");
+    return res.status(200).send();
   });
 };
 
