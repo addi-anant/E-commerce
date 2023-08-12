@@ -2,8 +2,8 @@ const modalWrapper = document.getElementById("modal");
 const cardContainer = document.querySelector(".card-container");
 
 // fetch all the todo from the server and display them to the user:
-const fetchCartProduct = async (number) => {
-  const response = await fetch(`/user/fetch-cart-product/${number}`, {
+const fetchCartProduct = async () => {
+  const response = await fetch(`/user/fetch-cart-product`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -20,7 +20,7 @@ const fetchCartProduct = async (number) => {
     );
   });
 };
-fetchCartProduct(5);
+fetchCartProduct();
 
 // Add Individual Product to DOM:
 const addToDOM = function (id, name, imgURL, price, qty) {
@@ -56,16 +56,6 @@ const addToDOM = function (id, name, imgURL, price, qty) {
 
   cardContainer.insertAdjacentHTML("beforeend", product);
 };
-
-// Load 5 more Products on 'Click' Event:
-const loadProduct = () => {
-  let count = 5;
-  document.getElementById("load-more-btn").addEventListener("click", () => {
-    count += 5;
-    fetchCartProduct(count);
-  });
-};
-loadProduct();
 
 // View Individual Product Detail in Modal:
 const viewDetail = async (id) => {

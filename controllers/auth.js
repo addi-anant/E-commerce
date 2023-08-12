@@ -4,7 +4,11 @@ const Cart = require("../models/Cart");
 const Token = require("../models/Token");
 const tokenGeneration = require("../utils/TokenGeneration");
 const validatePassword = require("../utils/validatePassword");
-const { verifyEmail, updatePassword } = require("../utils/NodeMailer");
+const {
+  verifyEmail,
+  updatePassword,
+  successful,
+} = require("../utils/NodeMailer");
 
 // Login: GET
 module.exports.login_GET = (req, res) => {
@@ -81,7 +85,7 @@ module.exports.register_POST = async (req, res) => {
     const token = await tokenGeneration(email);
 
     // SEND LINK FOR EMAIL VERIFICATION:
-    await verifyEmail(email, token);
+    await verifyEmail(email, token, req.headers.host);
 
     return res.status(200).send();
   } catch (Error) {
@@ -91,14 +95,18 @@ module.exports.register_POST = async (req, res) => {
 };
 
 // Verify Email:
-module.exports.verifyEmail_GET = (req, res) => {
+module.exports.verifyEmail_GET = async (req, res) => {
   const { token } = req.params;
+
+  /* check if Token Exist in DB: */
+  const isValid = await Token.find({ token: token });
+  if (isValid?.length === 0) return res.redirect("/auth/invalid-token");
 
   // Verifying the JWT token
   jwt.verify(token, process.env.JWT_SECRET, async (Error, decoded) => {
     if (Error) {
       console.log(`Error while verifying JWT token: ${Error}`);
-      res.status(500).json(Error);
+      return res.redirect("/auth/invalid-token");
     }
 
     const email = decoded.email;
@@ -125,6 +133,7 @@ module.exports.forgotPassword_GET = (req, res) => {
 // Forgot Password - POST:
 module.exports.updatePassword_POST = async (req, res) => {
   const { email } = req.body;
+
   if (email === "") return res.status(400).send();
 
   // CHECK IF ANY USER WITH PROVIDED EMAIL EXISTS:
@@ -135,7 +144,7 @@ module.exports.updatePassword_POST = async (req, res) => {
   const token = await tokenGeneration(email);
 
   // SEND MAIL FOR VERIFICATION:
-  await updatePassword(email, token);
+  await updatePassword(email, token, req.headers.host);
 
   return res.status(200).send();
 };
@@ -150,7 +159,7 @@ module.exports.resetPassword_GET = (req, res) => {
   });
 };
 
-// NEW Password (Forgot/Reset) - GET:
+// NEW Password - GET:
 module.exports.newPassword_GET = (req, res) => {
   return res.render("newPassword", {
     user: req.session.user,
@@ -158,7 +167,7 @@ module.exports.newPassword_GET = (req, res) => {
   });
 };
 
-// NEW Password (Forgot/Reset) - POST:
+// NEW Password - POST:
 module.exports.newPassword_POST = async (req, res) => {
   const { token } = req.params;
   const { password, confirmPassword } = req.body;
@@ -177,8 +186,20 @@ module.exports.newPassword_POST = async (req, res) => {
       { $set: { password: password } }
     );
 
+    /* password successfully updated mail! */
+    await successful(req.session.email);
+
+    /* Remove user from session: */
+    req.session.destroy();
+
     return res.status(200).send();
   }
+
+  /* check if Token Exist in DB: */
+  const isValid = await Token.find({ token: token });
+
+  if (isValid?.length === 0 || isValid?.length === "[]")
+    return res.status(500).send();
 
   // VERIFY TOKEN AND UPDATE PASSWORD:
   jwt.verify(token, process.env.JWT_SECRET, async (Error, decoded) => {
@@ -189,8 +210,14 @@ module.exports.newPassword_POST = async (req, res) => {
 
     if (Error) {
       console.log(`Error while verifying JWT token: ${Error}`);
-      return res.status(500).json(Error);
+      return res.status(500).send();
     }
+
+    /* password successfully updated mail! */
+    await successful(email);
+
+    /* Remove user from session: */
+    req.session.destroy();
 
     return res.status(200).send();
   });
@@ -199,5 +226,10 @@ module.exports.newPassword_POST = async (req, res) => {
 // LOGOUT - GET:
 module.exports.logout_GET = (req, res) => {
   req.session.destroy();
-  return res.redirect("/login");
+  return res.redirect("/auth/login");
+};
+
+/* Invalid Token: */
+module.exports.invalid_token_GET = (req, res) => {
+  return res.status(200).send("<h1> URL Expired! </h1>");
 };

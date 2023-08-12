@@ -3,20 +3,14 @@ const Product = require("../models/Product");
 
 module.exports.cart_GET = (req, res) => {
   // check if user is logged in.
-  if (!req.session.isLoggedIn) {
-    return res.status(401).json({ message: "Login to view cart." });
-  }
-
+  if (!req.session.isLoggedIn) return res.redirect("/auth/login");
   return res.render("cart", { user: req.session.user });
 };
 
-// fetch product (:limit)
+// fetch product:
 module.exports.fetch_cart_product_GET = async (req, res) => {
-  const { limit } = req.params;
   try {
-    const cartList = await Cart.findById(req?.session?.cartID, {
-      productList: { $slice: [limit - 5, 5] },
-    }).populate({
+    const cartList = await Cart.findById(req?.session?.cartID).populate({
       path: "productList.productInfo",
     });
 

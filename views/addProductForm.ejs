@@ -9,11 +9,7 @@
   </head>
   <body>
     <div class="admin-outer">
-      <form
-        class="admin-form"
-        enctype="multipart/form-data"
-        action="/admin/add-product"
-        method="post">
+      <form class="admin-form" enctype="multipart/form-data" id="product-form">
         <div class="form-field">
           <label for="name" class="label"> Product Name: </label>
           <input
@@ -67,10 +63,21 @@
           <input required type="file" id="img" class="input-img" name="file" />
         </div>
 
-        <button type="submit" class="form-btn">Add Product</button>
+        <div class="constraint-wrapper">
+          <ul class="constraint">
+            <li class="constraint-li">Maximum size: 250kb</li>
+            <li class="constraint-li">Type: .jpeg, .png, .jpg</li>
+          </ul>
+
+          <button type="submit" class="form-btn">Add Product</button>
+        </div>
+
+        <p class="message" id="client-info"></p>
+        <p class="message" id="client-error"></p>
       </form>
     </div>
 
     <script type="text/javascript" src="/js/auth.js"></script>
+    <script type="text/javascript" src="/js/admin.js"></script>
   </body>
 </html>

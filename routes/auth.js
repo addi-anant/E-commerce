@@ -31,6 +31,9 @@ router.get("/new-password/:token", auth.newPassword_GET);
 // New Password (Forgot/Reset) - POST:
 router.post("/new-password/:token", auth.newPassword_POST);
 
+// invalid token - GET:
+router.get("/invalid-token", auth.invalid_token_GET);
+
 // Logout:
 router.get("/logout", auth.logout_GET);
 

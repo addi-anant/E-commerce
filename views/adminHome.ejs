@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
     <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     <link rel="stylesheet" href="/css/adminHome.css" />
     <link rel="stylesheet" href="/css/adminProductList.css" />
 
@@ -18,11 +19,28 @@
       rel="stylesheet" />
   </head>
   <body>
+    <!-- navbar  -->
+    <%- include('partials/navbar.ejs', {user: user}) %>
+
     <div class="home-outer">
+      <% if (notAuthorized) { %>
+      <h1 class="notAuthorized">You are not authorized to view this page.</h1>
+      <% } else { %>
+
+      <!-- Admin Home  -->
       <h1>Admin Home</h1>
+      <div class="add-product-wrapper">
+        <button class="form-btn" id="new-product-btn">Add Product</button>
+      </div>
+
+      <!-- Product List -->
       <%- include('partials/adminProductList.ejs') %>
+
+      <!--  -->
+      <% } %>
     </div>
 
     <script type="text/javascript" src="/js/auth.js"></script>
+    <script type="text/javascript" src="/js/admin.js"></script>
   </body>
 </html>

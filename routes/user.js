@@ -1,10 +1,11 @@
 const user = require("../controllers/user");
 const router = require("express").Router();
 
+// fetch cart:
 router.get("/cart", user.cart_GET);
 
-// fetch product (:limit)
-router.get("/fetch-cart-product/:limit", user.fetch_cart_product_GET);
+// fetch product:
+router.get("/fetch-cart-product/", user.fetch_cart_product_GET);
 
 // add product to cart (:id)
 router.get("/add-product-cart/:id", user.add_product_GET);

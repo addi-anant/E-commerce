@@ -89,7 +89,7 @@ document.getElementById("new-btn")?.addEventListener("click", async () => {
     headers: { "Content-Type": "application/json" },
   });
 
-  response.status === 200 && window.location.replace("/auth/login");
+  response.status === 500 && window.location.replace("/auth/invalid-token");
 
   clientError.innerText =
     response.status === 400
@@ -99,30 +99,14 @@ document.getElementById("new-btn")?.addEventListener("click", async () => {
       : response.status === 406
       ? "Invalid Password, Follow Password Containts."
       : "";
-});
 
-// RESET PASSWORD HANDLER:
-document.getElementById("new-btn")?.addEventListener("click", async () => {
-  const password = document.getElementById("new-password").value;
-  const confirmPassword = document.getElementById("new-confirmPassword").value;
-
-  const response = await fetch(`/auth/new-password/${token}`, {
-    method: "POST",
-    body: JSON.stringify({
-      password: password,
-      confirmPassword: confirmPassword,
-    }),
-    headers: { "Content-Type": "application/json" },
-  });
-
-  response.status === 200 && window.location.replace("/auth/login");
-
-  clientError.innerText =
-    response.status === 400
-      ? "All Fields are required"
-      : response.status === 409
-      ? "Passwords donot match."
-      : response.status === 406
-      ? "Invalid Password, Follow Password Containts."
+  clientInfo.innerText =
+    response.status === 200
+      ? "Your password has been updated successfully, you will be redirected shortly!"
       : "";
+
+  response.status === 200 &&
+    setTimeout(() => {
+      window.location.replace("/auth/login");
+    }, 4000);
 });
