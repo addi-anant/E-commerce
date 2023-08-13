@@ -1,0 +1,5 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/d9a2ef68-3db4-4844-b5a6-a04e78080f65/resourceGroups/shopKart/providers/Microsoft.Web/sites/shopKart01",
+  "appService.deploySubpath": ".",
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"]
+}
