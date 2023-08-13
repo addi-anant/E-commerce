@@ -24,7 +24,7 @@ dotenv.config(); // dotenv Configuration.
 const upload = multer({ dest: "uploads/" }); // multer Configuration.
 app.use(express.static("uploads")); // Static File (Multer).
 app.use("/user", express.static("uploads")); // Static File (Multer).
-// app.use(upload.single("file")); // multer middleware - single upload.
+app.use(upload.single("file")); // multer middleware - single upload.
 
 mongoose // MongoDB Connection:
   .connect(process.env.MONGO_URL)

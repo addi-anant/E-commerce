@@ -1,6 +1,6 @@
 <div class="navbar">
   <p class="navbar-logo">
-    <a href="/" class="link-neutral">E-commerce</a>
+    <a href="/" class="link-neutral">ShopKart</a>
   </p>
   <div class="navbar-util">
     <!-- Not Logged In: -->
@@ -19,6 +19,8 @@
     <!-- Logged In: -->
     <% if(user) { %>
     <div class="control-btn">
+      <button id="admin">Admin</button>
+      <button id="password">Change Password</button>
       <div class="user">
         <p><%= user %></p>
         <i class="fa-solid fa-user"> </i>
@@ -27,9 +29,6 @@
         <i class="fa-solid fa-cart-shopping"></i>
       </a>
       <i class="fa-solid fa-right-from-bracket" id="logout"></i>
-
-      <button id="admin">Admin</button>
-      <button id="password">Change Password</button>
     </div>
     <% } %>
   </div>

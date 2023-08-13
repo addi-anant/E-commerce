@@ -12,6 +12,8 @@ const {
 
 // Login: GET
 module.exports.login_GET = (req, res) => {
+  if (req?.session?.isLoggedIn) return res.redirect("/");
+
   return res.render("login", { user: null });
 };
 
@@ -47,6 +49,8 @@ module.exports.login_POST = async (req, res) => {
 
 // Register: GET
 module.exports.register_GET = (req, res) => {
+  if (req?.session?.isLoggedIn) return res.redirect("/");
+
   return res.render("register", {
     user: null,
   });
@@ -231,5 +235,5 @@ module.exports.logout_GET = (req, res) => {
 
 /* Invalid Token: */
 module.exports.invalid_token_GET = (req, res) => {
-  return res.status(200).send("<h1> URL Expired! </h1>");
+  return res.render("invalidURL", { user: req.session.user });
 };

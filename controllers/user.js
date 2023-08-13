@@ -99,7 +99,7 @@ module.exports.decrease_quantity_POST = async (req, res) => {
 
   try {
     /* Minimum Quantity count reached: */
-    if (qty === 1) return res.status(400).send();
+    if (qty <= 1) return res.status(400).send();
 
     /* find the specified product and update it's Quantity: */
     await Cart.findOneAndUpdate(

@@ -166,7 +166,7 @@ document
       size < 250 && (type === "jpeg" || type === "jpg" || type === "png");
 
     if (!isValid) {
-      clientInfo.innerText = "Follow file upload constraints.";
+      clientError.innerText = "Follow file upload constraints.";
       return;
     }
 
@@ -185,10 +185,7 @@ document
     const response = await fetch(`/admin/add-product`, {
       method: "POST",
       body: formData,
-      headers: { "Content-Type": "multipart/form-data" },
     });
-
-    console.log(response.status);
 
     clientError.innerText =
       response.status === 403

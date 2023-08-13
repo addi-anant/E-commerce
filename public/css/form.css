@@ -76,17 +76,6 @@ i {
   padding: 0px;
 }
 
-.message {
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  color: red;
-  font-size: 14px;
-  font-weight: 400;
-  text-align: center;
-  font-family: "Noto Sans", sans-serif;
-}
-
 .constraint {
   width: 100%;
   margin: 10px 0px;
