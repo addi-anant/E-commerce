@@ -80,3 +80,23 @@ button.delete-btn {
 button.delete-btn:hover {
   background-color: var(--delete-secondary);
 }
+
+.input-img {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--icon);
+  font-family: "Noto Sans", sans-serif;
+}
+
+.admin-error {
+  width: 100%;
+  margin: 0px;
+  font-size: 13px;
+  font-weight: 400;
+  padding-top: 10px;
+  text-align: center;
+  color: var(--delete);
+  font-family: "Noto Sans", sans-serif;
+}

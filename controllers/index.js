@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 
+/* Home: GET */
 module.exports.home_GET = async (req, res) => {
   try {
     return res.render("home", {
@@ -11,6 +12,7 @@ module.exports.home_GET = async (req, res) => {
   }
 };
 
+/* Fetch Product: GET */
 module.exports.fetch_product_GET = async (req, res) => {
   const { limit } = req.params;
   try {
@@ -24,6 +26,7 @@ module.exports.fetch_product_GET = async (req, res) => {
   }
 };
 
+/* Individual Product (:id) */
 module.exports.product_GET = async (req, res) => {
   const { id } = req.params;
   try {

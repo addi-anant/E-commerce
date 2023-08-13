@@ -30,8 +30,8 @@ const addToDOM = function (id, name, imgURL, price) {
       </div>
 
       <div class="button-container">
-        <button type="button" class="cart-btn" onclick = addToCart("${id}")  >Add to cart</button>
-        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>Detial</button>
+        <button type="button" class="cart-btn" id="btn-${id}" onclick = addToCart("${id}")  >Add to cart</button>
+        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>Detail</button>
       </div>
     </div>
   </div>`;
@@ -40,7 +40,6 @@ const addToDOM = function (id, name, imgURL, price) {
 };
 
 const modalWrapper = document.getElementById("modal");
-const body = document.querySelector("body");
 const viewDetail = async (id) => {
   const response = await fetch(`/product/${id}`, {
     method: "GET",
@@ -87,7 +86,6 @@ const loadProduct = () => {
 loadProduct();
 
 const addToCart = async (id) => {
-  console.log(id);
   const response = await fetch(`/user/add-product-cart/${id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -97,8 +95,12 @@ const addToCart = async (id) => {
     window.location.replace("/auth/login");
   }
 
-  const product = await response.json();
-  console.log(product);
+  if ((response.status = 200)) {
+    const btn = document.getElementById(`btn-${id}`);
+    btn.innerHTML = `<i class="fa-solid fa-check fa-btn"></i>`;
 
-  console.log(response.status);
+    setTimeout(() => {
+      btn.innerHTML = "Add to Cart";
+    }, 2000);
+  }
 };

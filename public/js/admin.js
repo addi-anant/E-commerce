@@ -1,6 +1,6 @@
-const clientInfo = document.getElementById("client-info");
-const clientError = document.getElementById("client-error");
-const cardContainer = document.querySelector(".card-container");
+const clientInfo = document?.getElementById("client-info");
+const clientError = document?.getElementById("client-error");
+const cardContainer = document?.querySelector(".card-container");
 
 /* Fetch Product: */
 const fetchAdminProduct = async () => {
@@ -29,71 +29,78 @@ const addToDOM = function (id, name, imgURL, price, qty, description) {
   const product = `<div class="card">
         <!-- Product Img: -->
         <div class="card-top">
-        <img src=${imgURL} />
+        <img id="img-${id}" src=${imgURL} />
         </div>
         <div class="card-lower">
         <!-- Edit Form: -->
         <div class="card-detail">
-            <form>
+          <form>
             <div class="form-field">
-                <label for="name" class="label"> Name: </label>
-                <input
-                required
-                autocomplete="off"
-                type="text"
-                id="edit-name"
-                name="name"
-                placeholder="Product Name"
-                value="${name}"
-                class="input" />
+              <label for="name" class="label"> Name: </label>
+              <input
+              required
+              autocomplete="off"
+              type="text"
+              id="edit-name"
+              name="name"
+              placeholder="Product Name"
+              value="${name}"
+              class="input" />
             </div>
         
             <div class="form-field">
-                <label for="description" class="label">
-                Description:
-                </label>
-                <input
-                required
-                autocomplete="off"
-                type="text"
-                name="description"
-                id="edit-description"
-                value="${description}"
-                placeholder="Product Description"
-                class="input" />
+              <label for="description" class="label">
+              Description:
+              </label>
+              <input
+              required
+              autocomplete="off"
+              type="text"
+              name="description"
+              id="edit-description"
+              value="${description}"
+              placeholder="Product Description"
+              class="input" />
             </div>
         
             <div class="form-field">
-                <label for="price" class="label"> Price: </label>
-                <input
-                required
-                autocomplete="off"
-                type="number"
-                id="edit-price"
-                name="price"
-                value=${price}
-                placeholder="Product Price"
-                class="input" />
+              <label for="price" class="label"> Price: </label>
+              <input
+              required
+              autocomplete="off"
+              type="number"
+              id="edit-price"
+              name="price"
+              value=${price}
+              placeholder="Product Price"
+              class="input" />
             </div>
         
             <div class="form-field">
-                <label for="quantity" class="label"> Quantity: </label>
-                <input
-                required
-                autocomplete="off"
-                type="number"
-                id="edit-quantity"
-                name="quantity"
-                value=${qty}
-                placeholder="Product Quantity"
-                class="input" />
+              <label for="quantity" class="label"> Quantity: </label>
+              <input
+              required
+              autocomplete="off"
+              type="number"
+              id="edit-quantity"
+              name="quantity"
+              value=${qty}
+              placeholder="Product Quantity"
+              class="input" />
             </div>
-            </form>
+            
+            <div class="form-field">
+              <label for="img" class="label"> Image: </label>
+              <input required type="file" id="img" class="input-img" name="file" />
+            </div>
+
+            <p class="admin-error" id="client-error-${id}"></p>
+          </form>
         </div>
         
         <!-- Edit / Delete Button: -->
         <div class="button-container">
-            <button type="button" onclick="editProduct('${id}', this)">update</button>
+            <button type="button" id="btn-${id}" onclick="editProduct('${id}', this)">update</button>
             <button type="button" class="delete-btn" onclick="deleteProduct('${id}', this)">Delete</button>
         </div>
         </div>
@@ -106,31 +113,66 @@ const addToDOM = function (id, name, imgURL, price, qty, description) {
 /* Edit Product: */
 const editProduct = async (id, val) => {
   const name =
-    val.parentNode.parentNode.children[0].children[0].children[0].children[1]
-      .value;
+    val?.parentNode?.parentNode?.children[0]?.children[0]?.children[0]
+      ?.children[1]?.value;
 
   const description =
-    val.parentNode.parentNode.children[0].children[0].children[1].children[1]
-      .value;
+    val?.parentNode?.parentNode?.children[0]?.children[0]?.children[1]
+      ?.children[1]?.value;
 
   const price =
-    val.parentNode.parentNode.children[0].children[0].children[2].children[1]
-      .value;
+    val?.parentNode?.parentNode?.children[0]?.children[0]?.children[2]
+      ?.children[1]?.value;
 
   const quantity =
-    val.parentNode.parentNode.children[0].children[0].children[3].children[1]
-      .value;
+    val?.parentNode?.parentNode?.children[0]?.children[0]?.children[3]
+      ?.children[1]?.value;
 
+  const file =
+    val.parentNode?.parentNode?.children[0]?.children[0]?.children[4]
+      ?.children[1]?.files[0];
+
+  const size = Math.round(file?.size / 1024);
+  const type = file?.name.split(".").splice(-1)[0];
+
+  const isValid =
+    file && size < 250 && (type === "jpeg" || type === "jpg" || type === "png");
+
+  const clientError = document?.getElementById(`client-error-${id}`);
+  if (!isValid && file) {
+    clientError.innerText = "Max size 250kb. Type: .jpg, .png or .jpeg";
+    return;
+  } else {
+    clientError.innerText = "";
+  }
+
+  /* Create Form-data: */
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("price", price);
+  formData.append("quantity", quantity);
+  formData.append("description", description);
+  file && formData.append("file", file);
+
+  /* Add Product to DB: */
   const response = await fetch(`/admin/edit-product/${id}`, {
     method: "POST",
-    body: JSON.stringify({
-      quantity: quantity,
-      price: price,
-      name: name,
-      description: description,
-    }),
-    headers: { "Content-Type": "application/json" },
+    body: formData,
   });
+
+  if (response.status === 200) {
+    /* update img in card: */
+    file &&
+      document
+        .getElementById(`img-${id}`)
+        .setAttribute("src", URL.createObjectURL(file));
+
+    const btn = document.getElementById(`btn-${id}`);
+    btn.innerHTML = `<i class="fa-solid fa-check fa-btn"></i>`;
+    setTimeout(() => {
+      btn.innerHTML = "update";
+    }, 2000);
+  }
 };
 
 /* Delete Product: */

@@ -69,10 +69,18 @@ module.exports.edit_product_POST = async (req, res) => {
   if (!req.session.isLoggedIn && !req.session.admin)
     return res.status(403).send();
 
+  const img = req?.file?.filename;
+
+  const obj = {
+    name: name,
+    description: description,
+    price: price,
+    quantity: quantity,
+    ...(img && { img: img }),
+  };
+
   try {
-    await Product.findByIdAndUpdate(id, {
-      $set: { name, description, price, quantity },
-    });
+    await Product.findByIdAndUpdate(id, { $set: obj });
     return res.status(200).send();
   } catch (Error) {
     console.log(`Error while deleting Product - Admin: ${Error}.`);

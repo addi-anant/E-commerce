@@ -50,7 +50,7 @@ const addToDOM = function (id, name, imgURL, price, qty) {
 
       <div class="button-container">
         <button type="button" class="delete-btn" onclick="deleteProduct('${id}', this)" >Delete</button>
-        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>Detial</button>
+        <button type="button" class="detail-btn" onclick = viewDetail("${id}")>Detail</button>
       </div>
     </div>`;
 

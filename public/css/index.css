@@ -2,6 +2,7 @@
   --success: #1a5d1a;
   --delete: #fe0000;
   --primary: #d285ff;
+  --footer: #f3deff;
   --secondary: #e1aeff;
   --delete-secondary: #fe3939;
   --icon: rgb(149, 149, 149);
@@ -93,4 +94,8 @@ body {
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+.fa-btn {
+  font-size: 14px;
 }

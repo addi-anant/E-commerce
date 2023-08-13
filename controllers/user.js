@@ -1,13 +1,14 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 
+/* GET Cart: */
 module.exports.cart_GET = (req, res) => {
   // check if user is logged in.
   if (!req.session.isLoggedIn) return res.redirect("/auth/login");
   return res.render("cart", { user: req.session.user });
 };
 
-// fetch product:
+/* fetch product: */
 module.exports.fetch_cart_product_GET = async (req, res) => {
   try {
     const cartList = await Cart.findById(req?.session?.cartID).populate({
@@ -21,14 +22,13 @@ module.exports.fetch_cart_product_GET = async (req, res) => {
   }
 };
 
-// add product to cart (:id) - doubt
+/* add product to cart (:id) */
 module.exports.add_product_GET = async (req, res) => {
   const { id } = req.params;
 
   // check if user is logged in.
   if (!req.session.isLoggedIn) {
-    console.log("You are not logged in");
-    return res.status(401).json({ message: "You are not logged in" });
+    return res.status(401).send();
   }
 
   try {
@@ -39,7 +39,7 @@ module.exports.add_product_GET = async (req, res) => {
     });
 
     if (alreadyInCart.length) {
-      return res.status(200).json({ message: "product already in cart!" });
+      return res.status(200).send();
     }
 
     // add product to cart with quantity = 1.
@@ -47,16 +47,14 @@ module.exports.add_product_GET = async (req, res) => {
       $push: { productList: { productInfo: id, quantity: 1 } },
     });
 
-    return res
-      .status(200)
-      .json({ message: "product added to cart successfully" });
+    return res.status(200).send();
   } catch (Error) {
     console.log(`Error while adding product to cart: ${Error}`);
     return res.status(500).json(Error);
   }
 };
 
-// increase product quantity from cart (:id)
+/* increase product quantity from cart (:id) */
 module.exports.increase_quantity_POST = async (req, res) => {
   const { id } = req.params; /* Product ID */
   const { qty } = req.body; /* count of product in cart */
@@ -88,7 +86,7 @@ module.exports.increase_quantity_POST = async (req, res) => {
   }
 };
 
-// decrease product quantity from cart (:id)
+/* decrease product quantity from cart (:id) */
 module.exports.decrease_quantity_POST = async (req, res) => {
   const { id } = req.params; /* Product ID */
   const { qty } = req.body; /* count of product in cart */
@@ -117,7 +115,7 @@ module.exports.decrease_quantity_POST = async (req, res) => {
   }
 };
 
-// delete product from cart (:id)
+/* delete product from cart (:id) */
 module.exports.delete_product_GET = async (req, res) => {
   const { id } = req.params;
 

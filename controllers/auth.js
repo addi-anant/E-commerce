@@ -10,14 +10,14 @@ const {
   successful,
 } = require("../utils/NodeMailer");
 
-// Login: GET
+/* Login: GET */
 module.exports.login_GET = (req, res) => {
   if (req?.session?.isLoggedIn) return res.redirect("/");
 
   return res.render("login", { user: null });
 };
 
-// Login: POST
+/* Login: POST */
 module.exports.login_POST = async (req, res) => {
   const { email, password } = req.body;
 
@@ -47,7 +47,7 @@ module.exports.login_POST = async (req, res) => {
   }
 };
 
-// Register: GET
+/* Register: GET */
 module.exports.register_GET = (req, res) => {
   if (req?.session?.isLoggedIn) return res.redirect("/");
 
@@ -56,7 +56,7 @@ module.exports.register_GET = (req, res) => {
   });
 };
 
-// Register: POST
+/* Register: POST */
 module.exports.register_POST = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -98,7 +98,7 @@ module.exports.register_POST = async (req, res) => {
   }
 };
 
-// Verify Email:
+/* Verify Email: */
 module.exports.verifyEmail_GET = async (req, res) => {
   const { token } = req.params;
 
@@ -106,7 +106,7 @@ module.exports.verifyEmail_GET = async (req, res) => {
   const isValid = await Token.find({ token: token });
   if (isValid?.length === 0) return res.redirect("/auth/invalid-token");
 
-  // Verifying the JWT token
+  /* Verifying the JWT token */
   jwt.verify(token, process.env.JWT_SECRET, async (Error, decoded) => {
     if (Error) {
       console.log(`Error while verifying JWT token: ${Error}`);
@@ -117,16 +117,18 @@ module.exports.verifyEmail_GET = async (req, res) => {
     await User.findOneAndUpdate({ email }, { $set: { verified: true } });
     await Token.findOneAndDelete({ email });
 
-    // Verfied Email:
+    /* Verfied Email: */
     const user = await User.findOne({ email });
     req.session.user = user.name;
     req.session.isLoggedIn = true;
     req.session.admin = user.admin;
+    req.session.cartID = user.cart;
+    req.session.email = user.email;
     res.redirect("/");
   });
 };
 
-// Forgot Password: GET
+/* Forgot Password: GET */
 module.exports.forgotPassword_GET = (req, res) => {
   return res.render("updatePassword", {
     user: req.session.user,
@@ -134,7 +136,7 @@ module.exports.forgotPassword_GET = (req, res) => {
   });
 };
 
-// Forgot Password - POST:
+/* Forgot Password - POST: */
 module.exports.updatePassword_POST = async (req, res) => {
   const { email } = req.body;
 
@@ -153,7 +155,7 @@ module.exports.updatePassword_POST = async (req, res) => {
   return res.status(200).send();
 };
 
-// Reset Password: GET
+/* Reset Password: GET */
 module.exports.resetPassword_GET = (req, res) => {
   if (!req.session.isLoggedIn) return res.redirect("/");
 
@@ -163,7 +165,7 @@ module.exports.resetPassword_GET = (req, res) => {
   });
 };
 
-// NEW Password - GET:
+/* NEW Password - GET: */
 module.exports.newPassword_GET = (req, res) => {
   return res.render("newPassword", {
     user: req.session.user,
@@ -171,7 +173,7 @@ module.exports.newPassword_GET = (req, res) => {
   });
 };
 
-// NEW Password - POST:
+/* NEW Password - POST: */
 module.exports.newPassword_POST = async (req, res) => {
   const { token } = req.params;
   const { password, confirmPassword } = req.body;
@@ -227,7 +229,7 @@ module.exports.newPassword_POST = async (req, res) => {
   });
 };
 
-// LOGOUT - GET:
+/* LOGOUT - GET: */
 module.exports.logout_GET = (req, res) => {
   req.session.destroy();
   return res.redirect("/auth/login");
